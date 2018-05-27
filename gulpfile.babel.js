@@ -43,7 +43,7 @@ const customOpts = {
 };
 const opts = Object.assign({}, watchify.args, customOpts);
 const b = watchify(browserify(opts));
-b.transform(babelify);
+b.transform(babelify, { presets: ['env'] });
 b.on('update', gulp.series(scripts, reload)); // on any updates watchify runs scripts task and reload page
 b.on('log', log.info);
 
@@ -104,6 +104,8 @@ export function watch() {
 }
 
 const production = gulp.series(clean, (done) => {
+  console.log('//------STARTING PRODUCTION BUILD------//');
+
   buildType = 'production';
   done();
 }, styles, scripts, serve, watch);
@@ -113,6 +115,8 @@ export { production };
 
 // Development build
 export default gulp.series(clean, (done) => {
+  console.log('//------STARTING DEVELOPMENT BUILD------//');
+
   buildType = 'development';
   done();
 }, styles, scripts, serve, watch);
